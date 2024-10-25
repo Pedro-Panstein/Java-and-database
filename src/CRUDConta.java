@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class CRUDConta {
     private static Scanner sc = new Scanner(System.in);
+    private static List<Conta> contas = new ArrayList<>();
 
     public static Conta buscarPeloNumero(int numeroConta) {
         try (Connection connection = ConexaoBanco.getConnection()) {
@@ -32,8 +33,6 @@ public class CRUDConta {
     public static List<Conta> buscarTodasAsContas() {
         try (Connection connection = ConexaoBanco.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM tb_conta");
-
-            List<Conta> contas = new ArrayList<>();
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -172,7 +171,11 @@ public class CRUDConta {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new Conta(rs.getInt("numero"), cliente, rs.getDouble("saldo"), rs.getDouble("limite") );
+            } else {
+                Cliente clienteFalso = new Cliente(-200, "null");
+                return new Conta(-2000000, clienteFalso, -200, -200);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

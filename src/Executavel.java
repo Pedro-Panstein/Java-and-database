@@ -4,13 +4,24 @@ public class Executavel {
     private static final Scanner sc = new Scanner(System.in);
 
     private static Conta criarConta(Cliente titular) {
-        System.out.println("id da conta");
-        int numero = sc.nextInt();
-        System.out.println("saldo da conta");
-        double saldo = sc.nextDouble();
-        System.out.println("limite de saque");
-        double limite = sc.nextDouble();
-        return new Conta(numero, titular, saldo, limite);
+        int verif = 1;
+        int numero = 0;
+        do {
+            System.out.println("id da conta");
+            numero = sc.nextInt();
+            if (numero < 0) {
+                System.out.println("Digite um ID válido");
+                verif = 1;
+            } else {
+                verif = 0;
+            }
+        } while (verif == 0);
+            System.out.println("saldo da conta");
+            double saldo = sc.nextDouble();
+            System.out.println("limite de saque");
+            double limite = sc.nextDouble();
+            return new Conta(numero, titular, saldo, limite);
+
     }
 
     private static Cliente criarCliente() {
@@ -106,12 +117,15 @@ public class Executavel {
                     int opc = sc.nextInt();
                     if (opc == 1) {
                         Cliente clienteDelete = CRUDCliente.buscarPorId(idDeletar);
-                        if (clienteDelete.getConta() == null) {
-
-                        }
                         Conta contaDelete = CRUDConta.buscarPeloTitular(clienteDelete);
-                        CRUDConta.deletarConta(contaDelete);
-                        CRUDCliente.deletar(idDeletar);
+                        if (contaDelete.getNumeroConta() == -2000000) {
+                            System.out.println("Usuário deletado");
+                            CRUDCliente.deletar(idDeletar);
+                        } else {
+                            System.out.println("Conta e usuário deletados");
+                            CRUDConta.deletarConta(contaDelete);
+                            CRUDCliente.deletar(idDeletar);
+                        }
                     } else {
                         System.out.println("Voltando...");
                     }
