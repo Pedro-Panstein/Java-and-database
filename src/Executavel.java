@@ -66,7 +66,9 @@ public class Executavel {
                     cliente.setId(id);
                     break;
                 case 4:
-                    CRUDConta.deletarConta(); // deleta uma conta no banco
+                    System.out.println("Qual o id da conta que você deseja deletar?");
+                    int idDeletarConta = sc.nextInt();
+                    CRUDConta.deletarConta(CRUDConta.buscarPeloNumero(idDeletarConta)); // deleta uma conta no banco
                     break;
                 case 5:
                     System.out.println("Qual o numero da conta que você quer buscar?");
@@ -98,11 +100,17 @@ public class Executavel {
                     System.out.println("Qual o ID do cliente que você quer deletar");
                     int idDeletar = sc.nextInt();
                     System.out.println(CRUDCliente.buscarPorId(idDeletar));
-                    System.out.println("Tem certeza que deseja deletar este cliente?");
+                    System.out.println("Ao deletar este cliente você também deletará sua conta, tem certeza disso?");
                     System.out.println("1 - sim");
                     System.out.println("2 - não");
                     int opc = sc.nextInt();
                     if (opc == 1) {
+                        Cliente clienteDelete = CRUDCliente.buscarPorId(idDeletar);
+                        if (clienteDelete.getConta() == null) {
+
+                        }
+                        Conta contaDelete = CRUDConta.buscarPeloTitular(clienteDelete);
+                        CRUDConta.deletarConta(contaDelete);
                         CRUDCliente.deletar(idDeletar);
                     } else {
                         System.out.println("Voltando...");

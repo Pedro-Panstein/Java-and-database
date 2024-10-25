@@ -154,17 +154,15 @@ public class CRUDConta {
         }
     }
 
-    public static void deletarConta() {
-        int numero = sc.nextInt();
+    public static void deletarConta(Conta conta) {
         try (Connection connection = ConexaoBanco.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM tb_conta WHERE numero = ?");
 
-            ps.setInt(1, numero);
+            ps.setInt(1, conta.getNumeroConta());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("A conta de numero " + numero + " não foi encontrada");
     }
 
     public static Conta buscarPeloTitular(Cliente cliente) {
